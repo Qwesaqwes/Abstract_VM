@@ -1,98 +1,112 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.cpp                                          :+:      :+:    :+:   */
+/*   Parse.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/16 18:49:01 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:31:17 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.hpp"
+#include "Parse.hpp"
 
-parse::parse(void)
+Parse::Parse(void)
 {
 	store_commands("this is nothing");
 	return;
 }
-parse::parse(std::string file_name)
+Parse::Parse(std::string file_name)
 {
 	store_commands(file_name);
 	return;
 }
-parse::parse(parse const &src)
+Parse::Parse(Parse const &src)
 {
 	*this = src;
 	return;
 }
-parse::~parse(void) {return;}
+Parse::~Parse(void) {return;}
 
-const char	*parse::notfile::what(void) const throw()
+const char	*Parse::notfile::what(void) const throw()
 {
 	return ("File not found.");
 }
 
-const char	*parse::notExitInstruction::what(void) const throw()
+const char	*Parse::notExitInstruction::what(void) const throw()
 {
 	return ("Not exit instruction at the end.");
 }
 
-const char	*parse::unknowInstruction::what(void) const throw()
+const char	*Parse::unknowInstruction::what(void) const throw()
 {
 	return ("Unknow instruction.");
 }
 
-const char	*parse::unknowSyntax::what(void) const throw()
+const char	*Parse::unknowSyntax::what(void) const throw()
 {
 	return ("Error Syntax.");
 }
 
-parse		&parse::operator=(parse const &rhs)
+Parse		&Parse::operator=(Parse const &rhs)
 {
 	this->_content = rhs._content;
 	return (*this);
 }
 
-void	parse::check_values(std::string inst, std::string value, int line) const
+void	Parse::check_values(std::string type, std::string value, int line) const
+{
+	int point = 0;
+	std::string arrayFtype[2] = { "float", "double" };
+
+	if ((std::find(std::begin(arrayFtype), std::end(arrayFtype), type) != std::end(arrayFtype)) && value.find(".") == std::string::npos)
+		throw Parse::unknowSyntax(line);
+	for (std::string::iterator it = value.begin(); it != value.end(); it++)
+	{
+		if (value[0] == '-')
+			continue;
+		if (*it == '.' && point != 1 && (std::find(std::begin(arrayFtype), std::end(arrayFtype), type) != std::end(arrayFtype)))
+		{
+			point = 1;
+			continue;
+		}
+		if (!(isdigit(*it)))
+			throw Parse::unknowSyntax(line);
+	}
+}
+
+void	Parse::check_type(std::string inst, std::string value, int line) const
 {
 	std::size_t pos = value.find("(");
 	std::size_t pos2 = value.find(")");
 	std::string array_type[5] = { "int8", "int16", "int32", "float", "double" };
 
 	if (((inst != "push" && inst != "assert") && value != "0") || ((inst == "push" || inst == "assert") && value == "0"))
-	{
-		std::cout << "In line: " << line + 1 << " ";
-		throw parse::unknowSyntax();
-	}
+		throw Parse::unknowSyntax(line);
 	else if (pos != std::string::npos)
 	{
 		std::string type = value.substr(0, pos);
-		std::cout << type << std::endl;
+		std::cout << type << std::endl;		//need to erase
 		if ((std::find(std::begin(array_type), std::end(array_type), type) != std::end(array_type)) && pos2 != std::string::npos)
 		{
 			std::string	nb = value.substr(pos + 1, pos2 - pos - 1);
-
+			std::cout << nb << std::endl;	//need to erase
+			check_values(type, nb, line);
 		}
 		else
-		{
-			std::cout << "In line: " << line + 1 << " ";
-			throw parse::unknowSyntax();
-		}
-
+			throw Parse::unknowSyntax(line);
 	}
 	else
 	{
 		if ((inst != "push" && inst != "assert") && value == "0")
 			goto end;
-		std::cout << "In line: " << line + 1 << " ";
-		throw parse::unknowSyntax();
+		throw Parse::unknowSyntax(line);
 	}
 	end: {}
 }
 
-void	parse::check_content(void) const
+void	Parse::check_instruction(void) const
 {
 	std::string inst;
 	std::string	value;
@@ -100,7 +114,7 @@ void	parse::check_content(void) const
 	std::string array_inst[11] = { "push", "pop", "dump", "assert", "add", "sub", "mul", "div", "mod", "print", "exit" };
 
 	if (this->_content.back() != "exit")
-		throw parse::notExitInstruction();
+		throw Parse::notExitInstruction();
 	for(unsigned long i = 0; i < this->_content.size(); i++)
 	{
 		if (this->_content[i][0] == ';' || this->_content[i].empty())		//skip comments or if line is empty
@@ -111,15 +125,12 @@ void	parse::check_content(void) const
 		value = (value[0] == ';') ? "0" : value;
 		std::cout <<inst << " " << value << std::endl; //need to delete after all good
 		if (std::find(std::begin(array_inst), std::end(array_inst), inst) == std::end(array_inst))		//check if instruction exist
-		{
-			std::cout << "In line: " << i + 1 << " ";
-			throw parse::unknowInstruction();
-		}
-		check_values(inst, value, i);	//check value, if not okey throw exception
+			throw Parse::unknowInstruction(i);
+		check_type(inst, value, i);	//check value, if not okey throw exception
 	}
 }
 
-void	parse::store_commands(std::string str)
+void	Parse::store_commands(std::string str)
 {
 	std::ifstream ifs(str.c_str());
 	try
@@ -128,8 +139,8 @@ void	parse::store_commands(std::string str)
 		{
 			for(std::string line; std::getline(ifs,line);)			//store each line in container Vector<std::string>
 				this->_content.push_back(line);
-			// remove_comment();
-			check_content();
+			check_instruction();
+			remove_comment();
 		}
 		else if (str == "this is nothing")
 		{
@@ -138,13 +149,12 @@ void	parse::store_commands(std::string str)
 				getline(std::cin, str);
 				this->_content.push_back(str);
 			}
-			// remove_comment();
-			check_content();
+			this->_content.pop_back();
+			check_instruction();
+			remove_comment();
 		}
 		else
-		{
-			throw parse::notfile();
-		}
+			throw Parse::notfile();
 	}
 	catch (std::exception &e)
 	{
@@ -152,7 +162,7 @@ void	parse::store_commands(std::string str)
 	}
 }
 
-void	parse::remove_comment(void)
+void	Parse::remove_comment(void)
 {
 	for(unsigned long i = 0; i < this->_content.size(); i++)
 	{
@@ -172,7 +182,7 @@ void	parse::remove_comment(void)
 	}
 }
 
-std::vector<std::string>	parse::getVector(void) const
+std::vector<std::string>	Parse::getVector(void) const
 {
 	return (this->_content);
 }

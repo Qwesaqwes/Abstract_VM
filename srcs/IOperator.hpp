@@ -6,12 +6,21 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 16:21:36 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/12 18:28:53 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/17 19:05:16 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IOPERATOR_H
 # define IOPERATOR_H
+
+enum eOperandType
+{
+	Int8,
+	Int16,
+	Int32,
+	Float,
+	Double
+};
 
 class IOperator
 {

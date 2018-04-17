@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.hpp                                          :+:      :+:    :+:   */
+/*   Parse.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:29 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/16 17:41:37 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/17 16:08:46 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,27 @@
 # include <fstream>
 # include <vector>
 # include <exception>
-# include <string>
-# include <algorithm>
 
-class	parse
+class	Parse
 {
 	public:
-		parse(void);
-		parse(std::string);
-		parse(parse const &);
-		~parse(void);
+		Parse(void);
+		Parse(std::string);
+		Parse(Parse const &);
+		~Parse(void);
 
-		parse	&operator=(parse const &);
-
-		void	store_commands(std::string);
-		void	remove_comment(void);
-		void	check_content(void) const;
-		void	check_values(std::string, std::string, int) const;
+		Parse	&operator=(Parse const &);
 
 		std::vector<std::string>	getVector(void) const;
 
 	private:
 		std::vector<std::string> _content;
+
+		void	store_commands(std::string);
+		void	remove_comment(void);
+		void	check_instruction(void) const;
+		void	check_type(std::string, std::string, int) const;
+		void	check_values(std::string, std::string, int) const;
 
 		class	notfile : public std::exception		//exception if file doesn't exist
 		{
@@ -67,7 +66,7 @@ class	parse
 		class	unknowInstruction : public std::exception		//exception if unknow instruction
 		{
 			public:
-				unknowInstruction(void) {};
+				unknowInstruction(int i) {std::cout << "In line: " << i + 1 << " ";};
 				unknowInstruction(unknowInstruction const &) {};
 				virtual ~unknowInstruction(void) throw() {};
 
@@ -79,7 +78,7 @@ class	parse
 		class	unknowSyntax : public std::exception		//exception if unknow instruction
 		{
 			public:
-				unknowSyntax(void) {};
+				unknowSyntax(int i) {std::cout << "In line: " << i + 1 << " ";};
 				unknowSyntax(unknowSyntax const &) {};
 				virtual ~unknowSyntax(void) throw() {};
 
