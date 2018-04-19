@@ -1,2 +1,3 @@
 push int8(96)
+push int16(75)
 exit

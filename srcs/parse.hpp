@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:29 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/17 16:08:46 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/19 18:28:55 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fstream>
 # include <vector>
 # include <exception>
+# include "Factory.hpp"
 
 class	Parse
 {
@@ -75,7 +76,7 @@ class	Parse
 				virtual const char	*what(void) const throw();
 		};
 
-		class	unknowSyntax : public std::exception		//exception if unknow instruction
+		class	unknowSyntax : public std::exception		//exception if unknow Syntax
 		{
 			public:
 				unknowSyntax(int i) {std::cout << "In line: " << i + 1 << " ";};

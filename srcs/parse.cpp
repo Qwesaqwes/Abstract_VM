@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/17 16:31:17 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/19 19:25:54 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ void	Parse::check_type(std::string inst, std::string value, int line) const
 	else if (pos != std::string::npos)
 	{
 		std::string type = value.substr(0, pos);
-		std::cout << type << std::endl;		//need to erase
+		// std::cout << type << std::endl;		//need to erase
 		if ((std::find(std::begin(array_type), std::end(array_type), type) != std::end(array_type)) && pos2 != std::string::npos)
 		{
 			std::string	nb = value.substr(pos + 1, pos2 - pos - 1);
-			std::cout << nb << std::endl;	//need to erase
+			// std::cout << nb << std::endl;	//need to erase
 			check_values(type, nb, line);
 		}
 		else
@@ -123,7 +123,7 @@ void	Parse::check_instruction(void) const
 		inst = (pos != std::string::npos) ? this->_content[i].substr(0, pos) : this->_content[i].substr(0);	//store instruction
 		value = (pos != std::string::npos) ? this->_content[i].substr(pos + 1) : "0";						//store value if not store a "0"
 		value = (value[0] == ';') ? "0" : value;
-		std::cout <<inst << " " << value << std::endl; //need to delete after all good
+		// std::cout <<inst << " " << value << std::endl; //need to delete after all good
 		if (std::find(std::begin(array_inst), std::end(array_inst), inst) == std::end(array_inst))		//check if instruction exist
 			throw Parse::unknowInstruction(i);
 		check_type(inst, value, i);	//check value, if not okey throw exception
@@ -132,29 +132,31 @@ void	Parse::check_instruction(void) const
 
 void	Parse::store_commands(std::string str)
 {
-	std::ifstream ifs(str.c_str());
+	std::ifstream	ifs(str.c_str());
+	Factory			Factory;
+
 	try
 	{
 		if (ifs)
 		{
-			for(std::string line; std::getline(ifs,line);)			//store each line in container Vector<std::string>
+			for(std::string line; std::getline(ifs,line);)		//store each line in container Vector<std::string>
 				this->_content.push_back(line);
-			check_instruction();
-			remove_comment();
 		}
 		else if (str == "this is nothing")
 		{
 			while (str != ";;")
 			{
 				getline(std::cin, str);
-				this->_content.push_back(str);
+				this->_content.push_back(str);	//store each line in container Vector<std::string>
 			}
 			this->_content.pop_back();
-			check_instruction();
-			remove_comment();
 		}
 		else
 			throw Parse::notfile();
+		check_instruction();		//check if instruction, type and value are okey
+		remove_comment();			//if all okey remove comments
+		Factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
+
 	}
 	catch (std::exception &e)
 	{
