@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:32 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/19 19:46:53 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:56:43 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,53 @@ Factory		&Factory::operator=(Factory const &rhs)
 	this->_type = rhs._type;
 	this->_value = rhs._value;
 	return (*this);
+}
+
+IOperand const * createInt8(std::string const &value) const
+{
+
+}
+
+IOperand const	*createOperand( eOperandType type, std::string const & value ) const
+{
+	switch (numType)
+	{
+		case Int8:
+			return (createInt8(value));
+		case Int16:
+			return (createInt16(value));
+		case Int32:
+			return (createInt32(value));
+		case Float:
+			return (createFloat(value));
+		default:
+			return (createDouble(value));
+	}
+}
+
+eOperandType	Factory::guesstype(std::string type) const
+{
+	if (type == "int8")
+		return (Int8);
+	else if (type == "int16")
+		return (Int16);
+	else if (type == "int32")
+		return (Int32);
+	else if (type == "float")
+		return (Float);
+	else
+		return (Double);
+}
+
+void		Factory::push(std::string type, std::string value) const
+{
+	this->_stack.push_back(createOperand(guesstype(type), value));
+}
+
+void		Factory::detec_inst(unsigned long i)
+{
+	if (this->_instruction[i] == "push")
+		push(this->_type[i], this->_value[i]);
 }
 
 void		Factory::fill_vectors(std::vector<std::string> content)
@@ -53,6 +100,7 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 			this->_type.push_back(content[i].substr(pos_inst + 1, pos_type - pos_inst - 1));
 			this->_value.push_back(content[i].substr(pos_type + 1, pos_value - pos_type - 1));
 		}
+		detec_inst(i);
 	}
 	// for(unsigned long i = 0; i < this->_instruction.size(); i++)	 //need to delete
 	// {

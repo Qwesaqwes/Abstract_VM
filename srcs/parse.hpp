@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:29 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/19 18:28:55 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/20 17:23:23 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class	Parse
 
 		void	store_commands(std::string);
 		void	remove_comment(void);
+		void	remove_comment_inline(void);
 		void	check_instruction(void) const;
 		void	check_type(std::string, std::string, int) const;
 		void	check_values(std::string, std::string, int) const;

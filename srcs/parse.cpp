@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/19 19:25:54 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/20 17:24:29 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void	Parse::store_commands(std::string str)
 		}
 		else
 			throw Parse::notfile();
+		remove_comment_inline();
 		check_instruction();		//check if instruction, type and value are okey
 		remove_comment();			//if all okey remove comments
 		Factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
@@ -174,6 +175,13 @@ void	Parse::remove_comment(void)
 			i = -1;
 			continue;
 		}
+	}
+}
+
+void	Parse::remove_comment_inline(void)
+{
+	for(unsigned long i = 0; i < this->_content.size(); i++)
+	{
 		std::size_t found = this->_content[i].find_first_of(";");
 		if (found != std::string::npos)
 		{
@@ -183,6 +191,7 @@ void	Parse::remove_comment(void)
 		}
 	}
 }
+
 
 std::vector<std::string>	Parse::getVector(void) const
 {

@@ -6,14 +6,14 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:07:26 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/18 20:46:32 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:09:09 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPERATOR_H
 # define OPERATOR_H
 
-# include "./srcs/IOperator.hpp"
+# include "./srcs/IOperand.hpp"
 
 enum eOperandType
 {
@@ -44,7 +44,7 @@ class Operator : public IOperator
 		std::string const	&toString(void);
 
 	private:
-		
+
 };
 
 
