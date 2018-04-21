@@ -6,45 +6,39 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:07:26 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/20 16:09:09 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/21 20:27:54 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPERATOR_H
 # define OPERATOR_H
 
-# include "./srcs/IOperand.hpp"
+# include "IOperand.hpp"
 
-enum eOperandType
-{
-	Int8,
-	Int16,
-	Int32,
-	Float,
-	Double
-};
-
-class Operator : public IOperator
+template<typename T>
+class Operator : public IOperand
 {
 	public:
-		Operator(void);
-		Operator(Operator const &);
-		~Operator(void);
+		Operator<T>(void);
+		Operator<T>(T);
+		Operator<T>(Operator const &);
+		~Operator<T>(void);
 
-		Operator	&operator=(Operator const &);
+		Operator<T>			&operator=(Operator const &);
 
-		IOperand const * operator+(IOperand const &); // Sum
-		IOperand const * operator-(IOperand const &); // Difference
-		IOperand const * operator*(IOperand const &); // Product
-		IOperand const * operator/(IOperand const &); // Quotient
-		IOperand const * operator%(IOperand const &); // Modulo
+		// IOperand const		*operator+(IOperand const &); // Sum
+		// IOperand const		*operator-(IOperand const &); // Difference
+		// IOperand const		*operator*(IOperand const &); // Product
+		// IOperand const		*operator/(IOperand const &); // Quotient
+		// IOperand const		*operator%(IOperand const &); // Modulo
 
-		int					getPrecision(void);
-		eOperandType		getType(void);
-		std::string const	&toString(void);
+		int					getPrecision(void) const;
+		eOperandType		getType(void) const;
+		std::string const	&toString(void) const;
 
 	private:
-
+		T	_value;
+		std::string _valueString;
 };
 
 

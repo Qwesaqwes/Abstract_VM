@@ -1,4 +1,9 @@
-push int8(96)
-push int16(75)
-add;asd
+;push int8(9)
+;push int16(10)
+;push int32(11)
+;push float(12.12)
+;push double(13.13)
+assert double(13.13)
+;pop
+
 exit

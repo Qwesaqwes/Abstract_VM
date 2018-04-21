@@ -51,7 +51,8 @@ public:
     // but passes type to factory method "Create()"
     Client()
     {
-        VehicleType type = VT_FourWheeler;
+        VehicleType type = VT_TwoWheeler;
+		std::cout << static_cast<int>(type) << std::endl;
         pVehicle = Vehicle::Create(type);
     }
     ~Client() {
