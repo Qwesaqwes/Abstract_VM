@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:32 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 21:50:35 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/23 21:24:11 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,16 @@ char const		*Factory::assertNotTrue::what() const throw()
 char const		*Factory::stackEmpty::what() const throw()
 {
 	return ("Stack is empty can not proceed with the instruction.");
+}
+
+char const		*Factory::printInst::what() const throw()
+{
+	return ("Print instruction failed, type isn't INT8.");
+}
+
+char const		*Factory::operatorError::what() const throw()
+{
+	return ("Stack to small to ADD.");
 }
 
 IOperand const	*Factory::createInt8(std::string const &value) const
@@ -116,9 +126,9 @@ eOperandType	Factory::guesstype(std::string type) const
 		return (Double);
 }
 
-void		Factory::push(std::string type, std::string value)
+void		Factory::push(eOperandType type, std::string value)
 {
-	this->_stack.push(createOperand(guesstype(type), value));
+	this->_stack.push(createOperand(type, value));
 }
 
 void		Factory::assertt(std::string type, std::string value) const
@@ -154,14 +164,65 @@ void		Factory::pop(void)
 	this->_stack.pop();
 }
 
-void		Factory::detec_inst(unsigned long i)
+void		Factory::dump(void) const
+{
+	 std::stack<IOperand const *> tmp = this->_stack;
+
+	 while(!tmp.empty())
+	{
+		IOperand const *w = tmp.top();
+		std::cout << w->toString() << std::endl;
+		tmp.pop();
+	}
+}
+
+void		Factory::print(void) const
+{
+	if (this->_stack.empty())
+		throw Factory::stackEmpty();
+	IOperand const *w = this->_stack.top();
+	if (w->getType() != 0)
+		throw Factory::printInst();
+	int integer = std::stoi(w->toString());
+	if (integer > 32 && integer < 127)
+		std::cout << static_cast<char>(integer) << std::endl;
+	else
+		std::cout << "Not posible to interpret the value to ASCII." << std::endl;
+}
+
+void		Factory::add(void)
+{
+	if (this->_stack.size() < 2)
+		throw Factory::operatorError()
+	IOperand const *firstOp = this->_stack.top();
+	this->_stack.pop()
+	IOperand const *secondOp = this->_stack.top();
+	this->_stack.pop()
+	eOperandType resulType = (firstOp->getType() <= secondOp->getType()) ? firstOp->getType() : secondOp->getType();
+	if (resulType <= 2)
+	{
+		
+	}
+
+}
+
+bool		Factory::detec_inst(unsigned long i)
 {
 	if (this->_instruction[i] == "push")
-		push(this->_type[i], this->_value[i]);
+		push(guesstype(this->_type[i]), this->_value[i]);
 	else if (this->_instruction[i] == "assert")
 		assertt(this->_type[i], this->_value[i]);
 	else if (this->_instruction[i] == "pop")
 		pop();
+	else if (this->_instruction[i] == "dump")
+		dump();
+	else if (this->_instruction[i] == "print")
+		print();
+	else if (this->_instruction[i] == "exit")
+		return false;
+	else if (this->_instruction[i] == "add")
+		add();
+	return true;
 }
 
 void		Factory::fill_vectors(std::vector<std::string> content)
@@ -187,7 +248,11 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 			this->_type.push_back(content[i].substr(pos_inst + 1, pos_type - pos_inst - 1));
 			this->_value.push_back(content[i].substr(pos_type + 1, pos_value - pos_type - 1));
 		}
-		detec_inst(i);
+		if (!detec_inst(i))
+		{
+			std::cout << "Exit instruction called." << std::endl;
+			break;
+		}
 	}
 	// for(unsigned long i = 0; i < this->_instruction.size(); i++)	 //need to delete
 	// {
@@ -196,11 +261,11 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 	// 	std::cout << "value: " << this->_value[i] << std::endl << std::endl;
 	// }
 
-	while(!this->_stack.empty())
-	{
-		IOperand const *w = this->_stack.top();
-		std::cout << w->toString() << " ";
-		std::cout << w->getType() << std::endl;
-		this->_stack.pop();
-	}
+	// while(!this->_stack.empty())
+	// {
+	// 	IOperand const *w = this->_stack.top();
+	// 	std::cout << w->toString() << " ";
+	// 	std::cout << w->getType() << std::endl;
+	// 	this->_stack.pop();
+	// }
 }

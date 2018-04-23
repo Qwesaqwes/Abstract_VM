@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:52:01 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 20:23:52 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/23 18:34:44 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,12 @@ Operator<T>		&Operator<T>::operator=(Operator const &rhs)
 	return (*this);
 }
 
-// template<typename T>
-// IOperand const	*Operator<T>::operator+(IOperand const &rhs)
-// {
-// 	(void)rhs;
-// 	return (this);
-// }
-//
+template<typename T>
+IOperand const	*Operator<T>::operator+(IOperand const &rhs)
+{
+	
+}
+
 // template<typename T>
 // IOperand const	*Operator<T>::operator-(IOperand const &rhs)
 // {

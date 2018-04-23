@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 19:42:38 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/23 17:12:37 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ const char	*Parse::notfile::what(void) const throw()
 
 const char	*Parse::notExitInstruction::what(void) const throw()
 {
-	return ("Not exit instruction at the end.");
+	return ("Not exit instruction.");
 }
 
 const char	*Parse::unknowInstruction::what(void) const throw()
@@ -113,8 +113,6 @@ void	Parse::check_instruction(void) const
 	std::size_t pos;
 	std::string array_inst[11] = { "push", "pop", "dump", "assert", "add", "sub", "mul", "div", "mod", "print", "exit" };
 
-	if (this->_content.back() != "exit")
-		throw Parse::notExitInstruction();
 	for(unsigned long i = 0; i < this->_content.size(); i++)
 	{
 		if (this->_content[i][0] == ';' || this->_content[i].empty())		//skip comments or if line is empty
@@ -128,6 +126,19 @@ void	Parse::check_instruction(void) const
 			throw Parse::unknowInstruction(i);
 		check_type(inst, value, i);	//check value, if not okey throw exception
 	}
+}
+
+void	Parse::check_exit_inst(void) const
+{
+	bool	exit_good = false;
+
+	for (unsigned long i = 0; i < this->_content.size(); i++)
+	{
+		if (this->_content[i].find("exit") != std::string::npos)
+			exit_good = true;
+	}
+	if (!exit_good)
+		throw Parse::notExitInstruction();
 }
 
 void	Parse::store_commands(std::string str)
@@ -156,6 +167,7 @@ void	Parse::store_commands(std::string str)
 		remove_comment_inline();
 		check_instruction();		//check if instruction, type and value are okey
 		remove_comment();			//if all okey remove comments
+		check_exit_inst();
 		Factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
 
 	}

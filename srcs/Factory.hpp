@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:39 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 21:42:12 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/23 19:03:39 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ class	Factory
 		std::vector<std::string> _value;
 		std::stack<IOperand const *> _stack;
 
-		void			detec_inst(unsigned long);
+		bool			detec_inst(unsigned long);
 		eOperandType	guesstype(std::string) const;
-		void			push(std::string, std::string);
+		void			push(eOperandType, std::string);
 		void			assertt(std::string, std::string) const;
 		void			pop(void);
+		void			dump(void) const;
+		void			print(void) const;
+		void			add(void);
 
 		IOperand const	*createOperand( eOperandType type, std::string const & value ) const;
 		IOperand const * createInt8( std::string const & value ) const;
@@ -85,6 +88,30 @@ class	Factory
 				virtual ~stackEmpty(void) throw() {};
 
 				stackEmpty		&operator=(stackEmpty const &);
+
+				virtual const char	*what(void) const throw();
+		};
+
+		class	printInst : public std::exception		//exception if instruction print error
+		{
+			public:
+				printInst(void) {};
+				printInst(printInst const &) {};
+				virtual ~printInst(void) throw() {};
+
+				printInst		&operator=(printInst const &);
+
+				virtual const char	*what(void) const throw();
+		};
+
+		class	operatorError : public std::exception		//exception if operateur not posible
+		{
+			public:
+				operatorError(void) {};
+				operatorError(operatorError const &) {};
+				virtual ~operatorError(void) throw() {};
+
+				operatorError		&operator=(operatorError const &);
 
 				virtual const char	*what(void) const throw();
 		};

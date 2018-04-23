@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:29 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 20:10:38 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/23 17:06:15 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class	Parse
 		void	check_instruction(void) const;
 		void	check_type(std::string, std::string, int) const;
 		void	check_values(std::string, std::string, int) const;
+		void	check_exit_inst(void) const;
 
 		class	notfile : public std::exception		//exception if file doesn't exist
 		{

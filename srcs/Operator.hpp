@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:07:26 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 20:27:54 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/23 18:26:56 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Operator : public IOperand
 
 		Operator<T>			&operator=(Operator const &);
 
-		// IOperand const		*operator+(IOperand const &); // Sum
+		IOperand const		*operator+(IOperand const &); // Sum
 		// IOperand const		*operator-(IOperand const &); // Difference
 		// IOperand const		*operator*(IOperand const &); // Product
 		// IOperand const		*operator/(IOperand const &); // Quotient
