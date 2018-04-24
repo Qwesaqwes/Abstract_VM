@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:07:26 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/23 18:26:56 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/24 21:09:48 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define OPERATOR_H
 
 # include "IOperand.hpp"
+// # include "Factory.cpp"
+// # include "Factory.hpp"
 
 template<typename T>
 class Operator : public IOperand
@@ -41,5 +43,6 @@ class Operator : public IOperand
 		std::string _valueString;
 };
 
+#include "Operator.cc"
 
 #endif

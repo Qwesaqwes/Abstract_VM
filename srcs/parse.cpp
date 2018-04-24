@@ -6,11 +6,12 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/23 17:12:37 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/24 19:11:20 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parse.hpp"
+#include "Factory.hpp"
 
 Parse::Parse(void)
 {
@@ -144,7 +145,7 @@ void	Parse::check_exit_inst(void) const
 void	Parse::store_commands(std::string str)
 {
 	std::ifstream	ifs(str.c_str());
-	Factory			Factory;
+	Factory			factory;
 
 	try
 	{
@@ -168,7 +169,7 @@ void	Parse::store_commands(std::string str)
 		check_instruction();		//check if instruction, type and value are okey
 		remove_comment();			//if all okey remove comments
 		check_exit_inst();
-		Factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
+		factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
 
 	}
 	catch (std::exception &e)

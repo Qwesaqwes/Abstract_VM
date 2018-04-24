@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Operator.cpp                                       :+:      :+:    :+:   */
+/*   Operator.cc                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:52:01 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/23 18:34:44 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/24 21:13:57 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Operator.hpp"
+#include "Factory.hpp"
 
 template<typename T>
 Operator<T>::Operator(void) {return ;}
@@ -42,7 +43,24 @@ Operator<T>		&Operator<T>::operator=(Operator const &rhs)
 template<typename T>
 IOperand const	*Operator<T>::operator+(IOperand const &rhs)
 {
-	
+	Factory		factory;
+
+	eOperandType resulType = (this->getType() <= rhs.getType()) ? this->getType() : rhs.getType();
+	if (resulType <= 2)
+	{
+		int intRes = std::stoi(this->toString()) + std::stoi(rhs.toString());
+		return (factory.createOperand(resulType, std::to_string(intRes)));
+	}
+	else if (resulType == 3)
+	{
+		float floatRes = std::stof(this->toString()) + std::stof(rhs.toString());
+		return (factory.createOperand(resulType, std::to_string(floatRes)));
+	}
+	else
+	{
+		double doubleRes = std::stod(this->toString()) + std::stod(rhs.toString());
+		return (factory.createOperand(resulType, std::to_string(doubleRes)));
+	}
 }
 
 // template<typename T>

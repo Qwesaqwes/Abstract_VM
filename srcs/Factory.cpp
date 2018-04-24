@@ -6,11 +6,12 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:32 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/23 21:24:11 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/24 21:04:22 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Factory.hpp"
+#include "Operator.hpp"
 
 Factory::Factory(void) {return;}
 
@@ -193,17 +194,13 @@ void		Factory::print(void) const
 void		Factory::add(void)
 {
 	if (this->_stack.size() < 2)
-		throw Factory::operatorError()
+		throw Factory::operatorError();
 	IOperand const *firstOp = this->_stack.top();
-	this->_stack.pop()
+	this->_stack.pop();
 	IOperand const *secondOp = this->_stack.top();
-	this->_stack.pop()
-	eOperandType resulType = (firstOp->getType() <= secondOp->getType()) ? firstOp->getType() : secondOp->getType();
-	if (resulType <= 2)
-	{
-		
-	}
-
+	this->_stack.pop();
+	IOperand const *res = *firstOp + *secondOp;
+	this->_stack.push(res);
 }
 
 bool		Factory::detec_inst(unsigned long i)

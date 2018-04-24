@@ -6,12 +6,12 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 16:17:01 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/21 20:06:37 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/24 19:34:43 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./srcs/Parse.hpp"
-#include "./srcs/Parse.cpp"
+// #include "Parse.cpp"
 
 int main(int ac, char **av)
 {

@@ -6,19 +6,16 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:39 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/23 19:03:39 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/24 21:01:59 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FACTORY_H
 # define FACTORY_H
 
-// # include <iostream>
 # include <vector>
 # include <string>
 # include "IOperand.hpp"
-// # include "Operator.hpp"
-# include "Operator.cpp"
 # include <exception>
 # include <limits>
 # include <stack>
@@ -33,6 +30,7 @@ class	Factory
 		Factory		&operator=(Factory const &);
 
 		void		fill_vectors(std::vector<std::string>);
+		IOperand const	*createOperand(eOperandType type, std::string const & value) const;
 
 	private:
 		std::vector<std::string> _instruction;
@@ -49,7 +47,6 @@ class	Factory
 		void			print(void) const;
 		void			add(void);
 
-		IOperand const	*createOperand( eOperandType type, std::string const & value ) const;
 		IOperand const * createInt8( std::string const & value ) const;
 		IOperand const * createInt16( std::string const & value ) const;
 		IOperand const * createInt32( std::string const & value ) const;
