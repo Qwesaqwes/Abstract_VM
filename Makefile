@@ -6,7 +6,7 @@
 #    By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/09 16:15:09 by jichen-m          #+#    #+#              #
-#    Updated: 2018/04/24 19:50:56 by jichen-m         ###   ########.fr        #
+#    Updated: 2018/04/25 16:49:29 by jichen-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,11 @@ SRCO = $(SRC:.cpp=.o)
 all: $(NAME)
 
 $(NAME) :
-		$(CC) $(FLAGS) -c $(SRC)
-		$(CC) -o $(NAME) *.o
+		@$(CC) $(FLAGS) -c $(SRC)
+		@$(CC) -o $(NAME) *.o
 
 clean:
-		@rm -rf $(SRCO)
+		@rm -rf *.o
 		@echo "objects files have been removed ! ✓"
 
 fclean: clean

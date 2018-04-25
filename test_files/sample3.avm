@@ -1,12 +1,13 @@
-push int8(9)
-push int16(10)
-push int32(11)
-dump
-add
+push float(0.0)
+push float(10.0)
+;dump
+;push int16(32766)
+div
 dump
 exit
 ;push float(12.12)
+;dump
 ;push double(13.13)
 ;assert double(13.13)
 ;pop
-exit
+;exit

@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:39 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/24 21:01:59 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:36:34 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <vector>
 # include <string>
 # include "IOperand.hpp"
-# include <exception>
-# include <limits>
+// # include <exception>
+// # include <limits>
 # include <stack>
 
 class	Factory
@@ -40,12 +40,17 @@ class	Factory
 
 		bool			detec_inst(unsigned long);
 		eOperandType	guesstype(std::string) const;
+
 		void			push(eOperandType, std::string);
 		void			assertt(std::string, std::string) const;
 		void			pop(void);
 		void			dump(void) const;
 		void			print(void) const;
 		void			add(void);
+		void			sub(void);
+		void			mul(void);
+		void			divv(void);
+
 
 		IOperand const * createInt8( std::string const & value ) const;
 		IOperand const * createInt16( std::string const & value ) const;
@@ -104,7 +109,7 @@ class	Factory
 		class	operatorError : public std::exception		//exception if operateur not posible
 		{
 			public:
-				operatorError(void) {};
+				operatorError() {};
 				operatorError(operatorError const &) {};
 				virtual ~operatorError(void) throw() {};
 
