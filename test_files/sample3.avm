@@ -1,8 +1,8 @@
-push float(0.0)
-push float(10.0)
+push float(5.5)
+push float(12.12)
 ;dump
 ;push int16(32766)
-div
+mod
 dump
 exit
 ;push float(12.12)

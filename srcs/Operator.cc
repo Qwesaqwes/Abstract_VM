@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:52:01 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 18:34:50 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/25 20:44:56 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,13 +182,29 @@ IOperand const	*Operator<T>::operator/(IOperand const &rhs) const
 	}
 }
 
-// template<typename T>
-// IOperand const	*Operator<T>::operator%(IOperand const &rhs)
-// {
-// 	(void)rhs;
-// 	return (this);
-// }
-//
+template<typename T>
+IOperand const	*Operator<T>::operator%(IOperand const &rhs) const
+{
+	Factory		factory;
+
+	eOperandType resulType = (this->getType() >= rhs.getType()) ? this->getType() : rhs.getType();
+	if (resulType <= 2)
+	{
+		int intRes = (std::stoi(rhs.toString()) == 0) ? throw undifinedBehavior() : std::stoi(this->toString()) % std::stoi(rhs.toString());
+		return (factory.createOperand(resulType, std::to_string(intRes)));
+	}
+	else if (resulType == 3)
+	{
+		float floatRes = (std::stof(rhs.toString()) == 0) ? throw undifinedBehavior() : fmod(std::stof(this->toString()), std::stof(rhs.toString()));
+		return (factory.createOperand(resulType, std::to_string(floatRes)));
+	}
+	else
+	{
+		double doubleRes = (std::stod(rhs.toString()) == 0) ? throw undifinedBehavior() : fmod(std::stod(this->toString()), std::stod(rhs.toString()));
+		return (factory.createOperand(resulType, std::to_string(doubleRes)));
+	}
+}
+
 template<typename T>
 std::string const	&Operator<T>::toString(void) const
 {

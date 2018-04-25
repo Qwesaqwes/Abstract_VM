@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:32 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 18:36:31 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/25 20:48:34 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,18 @@ void		Factory::divv(void)
 	this->_stack.push(res);
 }
 
+void		Factory::mod(void)
+{
+	if (this->_stack.size() < 2)
+		throw Factory::operatorError();
+	IOperand const *firstOp = this->_stack.top();
+	this->_stack.pop();
+	IOperand const *secondOp = this->_stack.top();
+	this->_stack.pop();
+	IOperand const *res = *firstOp % *secondOp;
+	this->_stack.push(res);
+}
+
 bool		Factory::detec_inst(unsigned long i)
 {
 	if (this->_instruction[i] == "push")
@@ -242,8 +254,8 @@ bool		Factory::detec_inst(unsigned long i)
 		dump();
 	else if (this->_instruction[i] == "print")
 		print();
-	else if (this->_instruction[i] == "exit")
-		return false;
+	else if (this->_instruction[i] == "mod")
+		mod();
 	else if (this->_instruction[i] == "add")
 		add();
 	else if (this->_instruction[i] == "sub")
@@ -252,6 +264,8 @@ bool		Factory::detec_inst(unsigned long i)
 		mul();
 	else if (this->_instruction[i] == "div")
 		divv();
+	else
+		return false;
 	return true;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:07:26 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 18:25:43 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/25 20:47:49 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 # include "IOperand.hpp"
 # include <exception>
 # include <limits>
-
-// # include "Factory.cpp"
-// # include "Factory.hpp"
+# include <math.h>
 
 template<typename T>
 class Operator : public IOperand
@@ -35,7 +33,7 @@ class Operator : public IOperand
 		IOperand const		*operator-(IOperand const &) const; // Difference
 		IOperand const		*operator*(IOperand const &) const; // Product
 		IOperand const		*operator/(IOperand const &) const; // Quotient
-		// IOperand const		*operator%(IOperand const &); // Modulo
+		IOperand const		*operator%(IOperand const &) const; // Modulo
 
 		int					getPrecision(void) const;
 		eOperandType		getType(void) const;

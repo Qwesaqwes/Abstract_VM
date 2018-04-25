@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:39 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 18:36:34 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/25 20:35:41 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class	Factory
 		void			sub(void);
 		void			mul(void);
 		void			divv(void);
+		void			mod(void);
 
 
 		IOperand const * createInt8( std::string const & value ) const;
