@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/24 19:11:20 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/26 19:23:16 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ const char	*Parse::notExitInstruction::what(void) const throw()
 	return ("Not exit instruction.");
 }
 
-const char	*Parse::unknowInstruction::what(void) const throw()
-{
-	return ("Unknow instruction.");
-}
+// const char	*Parse::unknowInstruction::what(void) const throw()
+// {
+// 	return ("Unknow instruction.");
+// }
 
 const char	*Parse::unknowSyntax::what(void) const throw()
 {
@@ -56,13 +56,13 @@ Parse		&Parse::operator=(Parse const &rhs)
 	return (*this);
 }
 
-void	Parse::check_values(std::string type, std::string value, int line) const
+void	Parse::check_values(std::string type, std::string value, int line, std::ofstream &outfile) const
 {
 	int point = 0;
 	std::string arrayFtype[2] = { "float", "double" };
 
 	if ((std::find(std::begin(arrayFtype), std::end(arrayFtype), type) != std::end(arrayFtype)) && value.find(".") == std::string::npos)
-		throw Parse::unknowSyntax(line);
+		outfile << "In line: " << line + 1 << " Unknow Syntax.1" << std::endl;//throw Parse::unknowSyntax(line);
 	for (std::string::iterator it = value.begin(); it != value.end(); it++)
 	{
 		if (value[0] == '-')
@@ -73,18 +73,18 @@ void	Parse::check_values(std::string type, std::string value, int line) const
 			continue;
 		}
 		if (!(isdigit(*it)))
-			throw Parse::unknowSyntax(line);
+			outfile << "In line: " << line + 1 << " Unknow Syntax.1" << std::endl;//throw Parse::unknowSyntax(line);
 	}
 }
 
-void	Parse::check_type(std::string inst, std::string value, int line) const
+void	Parse::check_type(std::string inst, std::string value, int line, std::ofstream &outfile) const
 {
 	std::size_t pos = value.find("(");
 	std::size_t pos2 = value.find(")");
 	std::string array_type[5] = { "int8", "int16", "int32", "float", "double" };
 
 	if (((inst != "push" && inst != "assert") && value != "0") || ((inst == "push" || inst == "assert") && value == "0"))
-		throw Parse::unknowSyntax(line);
+		outfile << "In line: " << line + 1 << " Unknow Syntax.1" << std::endl;// throw Parse::unknowSyntax(line);
 	else if (pos != std::string::npos)
 	{
 		std::string type = value.substr(0, pos);
@@ -93,21 +93,21 @@ void	Parse::check_type(std::string inst, std::string value, int line) const
 		{
 			std::string	nb = value.substr(pos + 1, pos2 - pos - 1);
 			// std::cout << nb << std::endl;	//need to erase
-			check_values(type, nb, line);
+			check_values(type, nb, line, outfile);
 		}
 		else
-			throw Parse::unknowSyntax(line);
+			outfile << "In line: " << line + 1 << " Unknow Syntax.2" << std::endl;//throw Parse::unknowSyntax(line);
 	}
 	else
 	{
 		if ((inst != "push" && inst != "assert") && value == "0")
 			goto end;
-		throw Parse::unknowSyntax(line);
+		outfile << "In line: " << line + 1 << " Unknow Syntax.3" << std::endl;//throw Parse::unknowSyntax(line);
 	}
 	end: {}
 }
 
-void	Parse::check_instruction(void) const
+void	Parse::check_instruction(std::ofstream &outfile) const
 {
 	std::string inst;
 	std::string	value;
@@ -124,8 +124,12 @@ void	Parse::check_instruction(void) const
 		value = (value[0] == ';') ? "0" : value;
 		// std::cout <<inst << " " << value << std::endl; //need to delete after all good
 		if (std::find(std::begin(array_inst), std::end(array_inst), inst) == std::end(array_inst))		//check if instruction exist
-			throw Parse::unknowInstruction(i);
-		check_type(inst, value, i);	//check value, if not okey throw exception
+		{
+			outfile << "In line: " << i + 1 << " Unknow Instruction." << std::endl;
+			// continue;
+			// throw Parse::unknowInstruction(i);
+		}
+		check_type(inst, value, i, outfile);	//check value, if not okey throw exception
 	}
 }
 
@@ -142,35 +146,51 @@ void	Parse::check_exit_inst(void) const
 		throw Parse::notExitInstruction();
 }
 
-void	Parse::store_commands(std::string str)
+void	Parse::fill_content(std::string str)
 {
 	std::ifstream	ifs(str.c_str());
+	if (ifs)
+	{
+		for(std::string line; std::getline(ifs,line);)		//store each line in container Vector<std::string>
+			this->_content.push_back(line);
+	}
+	else if (str == "this is nothing")
+	{
+		while (str != ";;")
+		{
+			getline(std::cin, str);
+			this->_content.push_back(str);	//store each line in container Vector<std::string>
+		}
+		this->_content.pop_back();
+	}
+	else
+		throw Parse::notfile();
+}
+
+void	Parse::store_commands(std::string str)
+{
 	Factory			factory;
 
 	try
 	{
-		if (ifs)
-		{
-			for(std::string line; std::getline(ifs,line);)		//store each line in container Vector<std::string>
-				this->_content.push_back(line);
-		}
-		else if (str == "this is nothing")
-		{
-			while (str != ";;")
-			{
-				getline(std::cin, str);
-				this->_content.push_back(str);	//store each line in container Vector<std::string>
-			}
-			this->_content.pop_back();
-		}
-		else
-			throw Parse::notfile();
+		std::ofstream outfile ("Error.txt");
+		fill_content(str);
 		remove_comment_inline();
-		check_instruction();		//check if instruction, type and value are okey
+		check_instruction(outfile);		//check if instruction, type and value are okey
 		remove_comment();			//if all okey remove comments
 		check_exit_inst();
-		factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
+		outfile.close();
 
+		std::ifstream fileEmpty;
+		fileEmpty.open("./Error.txt", std::ios::binary);
+		fileEmpty.seekg(0, std::ios::end);
+		if (fileEmpty.tellg() == 0)
+		{
+			remove("./Error.txt");
+			factory.fill_vectors(this->_content);	//split the content into 3 vectors (instruction, type, value)
+		}
+		else
+			std::cout << "Error, Logs in Error.txt." << std::endl;
 	}
 	catch (std::exception &e)
 	{

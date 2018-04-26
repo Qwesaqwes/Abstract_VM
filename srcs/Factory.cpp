@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:32 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 20:48:34 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/26 17:12:20 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ char const		*Factory::operatorError::what() const throw()
 
 IOperand const	*Factory::createInt8(std::string const &value) const
 {
-	int nb = std::stoi(value);
+	// int nb = std::stoi(value);
+	int nb;
+	std::stringstream sstr;
+	sstr << value;
+	sstr >> nb;
 	if (nb < -128 || nb > 127)
 		throw Factory::invalidValue();
 	return (new Operator<int8_t>(nb));
@@ -66,7 +70,11 @@ IOperand const	*Factory::createInt8(std::string const &value) const
 
 IOperand const	*Factory::createInt16(std::string const &value) const
 {
-	int nb = std::stoi(value);
+	// int nb = std::stoi(value);
+	int nb;
+	std::stringstream sstr;
+	sstr << value;
+	sstr >> nb;
 	if (nb < -32768 || nb > 32767)
 		throw Factory::invalidValue();
 	return (new Operator<int16_t>(nb));
@@ -74,16 +82,34 @@ IOperand const	*Factory::createInt16(std::string const &value) const
 
 IOperand const	*Factory::createInt32(std::string const &value) const
 {
+	int nb;
+	std::stringstream sstr;
+	sstr << value;
+	sstr >> nb;
+	if (nb < std::numeric_limits<int>::min() || nb > std::numeric_limits<int>::max())
+		throw Factory::invalidValue();
 	return (new Operator<int32_t>(std::stoi(value)));
 }
 
 IOperand const	*Factory::createFloat(std::string const &value) const
 {
+	float nb;
+	std::stringstream sstr;
+	sstr << value;
+	sstr >> nb;
+	if (nb < (-1 * std::numeric_limits<float>::max()) || nb > std::numeric_limits<float>::max())
+		throw Factory::invalidValue();
 	return (new Operator<float>(std::stof(value)));
 }
 
 IOperand const	*Factory::createDouble(std::string const &value) const
 {
+	double nb;
+	std::stringstream sstr;
+	sstr << value;
+	sstr >> nb;
+	if (nb < (-1 * std::numeric_limits<double>::max()) || nb > std::numeric_limits<double>::max())
+		throw Factory::invalidValue();
 	return (new Operator<double>(std::stod(value)));
 }
 
@@ -163,12 +189,30 @@ void		Factory::dump(void) const
 	 while(!tmp.empty())
 	{
 		IOperand const *w = tmp.top();
-		std::cout << w->toString() << std::endl;
+		switch (w->getType())
+		{
+			case 0:
+				std::cout <<"\033[1;31m" << w->toString() << "\033[0m" << std::endl;
+				break;
+			case 1:
+				std::cout <<"\033[1;33m" << w->toString() << "\033[0m" << std::endl;
+				break;
+			case 2:
+				std::cout <<"\033[1;36m" << w->toString() << "\033[0m" << std::endl;
+				break;
+			case 3:
+				std::cout <<"\033[1;37m" << w->toString() << "\033[0m" << std::endl;
+				break;
+			default:
+				std::cout <<"\033[1;35m" << w->toString() << "\033[0m" << std::endl;
+				break;
+		}
+		// std::cout <<"\033[1;31m" << w->toString() << "\033[0m" << std::endl;
 		tmp.pop();
 	}
 }
 
-void		Factory::print(void) const
+bool		Factory::print(void) const
 {
 	if (this->_stack.empty())
 		throw Factory::stackEmpty();
@@ -177,9 +221,13 @@ void		Factory::print(void) const
 		throw Factory::printInst();
 	int integer = std::stoi(w->toString());
 	if (integer > 32 && integer < 127)
-		std::cout << static_cast<char>(integer) << std::endl;
+		std::cout << static_cast<char>(integer);
 	else
+	{
 		std::cout << "Not posible to interpret the value to ASCII." << std::endl;
+		return false;
+	}
+	return true;
 }
 
 void		Factory::add(void)
@@ -253,7 +301,7 @@ bool		Factory::detec_inst(unsigned long i)
 	else if (this->_instruction[i] == "dump")
 		dump();
 	else if (this->_instruction[i] == "print")
-		print();
+		{if (!print()) return false;}
 	else if (this->_instruction[i] == "mod")
 		mod();
 	else if (this->_instruction[i] == "add")
@@ -275,6 +323,11 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 	std::size_t pos_type;
 	std::size_t pos_value;
 
+	std::cout <<"\033[1;31mINT8\033[0m" << std::endl;
+	std::cout <<"\033[1;33mINT16\033[0m" << std::endl;
+	std::cout <<"\033[1;36mINT32\033[0m" << std::endl;
+	std::cout <<"\033[1;37mFLOAT\033[0m" << std::endl;
+	std::cout <<"\033[1;35mDOUBLE\033[0m" << std::endl << std::endl << std::endl;
 	for (unsigned long i = 0; i < content.size(); ++i)
 	{
 		pos_inst = content[i].find(" ");
@@ -302,12 +355,12 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 	// 	std::cout << "value: " << this->_value[i] << std::endl << std::endl;
 	// }
 
-	std::cout << std::endl;
-	while(!this->_stack.empty())
-	{
-		IOperand const *w = this->_stack.top();
-		std::cout << w->toString() << " ";
-		std::cout << w->getType() << std::endl;
-		this->_stack.pop();
-	}
+	// std::cout << std::endl;
+	// while(!this->_stack.empty())
+	// {
+	// 	IOperand const *w = this->_stack.top();
+	// 	std::cout << w->toString() << " ";
+	// 	std::cout << w->getType() << std::endl;
+	// 	this->_stack.pop();
+	// }
 }

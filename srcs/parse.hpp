@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:29 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 15:46:02 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/26 19:21:44 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <fstream>
 # include <iostream>
 # include <vector>
+// # include <istream>
 // # include <exception>
 
 class	Parse
@@ -36,10 +37,11 @@ class	Parse
 		void	store_commands(std::string);
 		void	remove_comment(void);
 		void	remove_comment_inline(void);
-		void	check_instruction(void) const;
-		void	check_type(std::string, std::string, int) const;
-		void	check_values(std::string, std::string, int) const;
+		void	check_instruction(std::ofstream &) const;
+		void	check_type(std::string, std::string, int, std::ofstream &) const;
+		void	check_values(std::string, std::string, int, std::ofstream &) const;
 		void	check_exit_inst(void) const;
+		void	fill_content(std::string);
 
 		class	notfile : public std::exception		//exception if file doesn't exist
 		{
@@ -65,17 +67,17 @@ class	Parse
 				virtual const char	*what(void) const throw();
 		};
 
-		class	unknowInstruction : public std::exception		//exception if unknow instruction
-		{
-			public:
-				unknowInstruction(int i) {std::cout << "In line: " << i + 1 << " ";};
-				unknowInstruction(unknowInstruction const &) {};
-				virtual ~unknowInstruction(void) throw() {};
-
-				unknowInstruction		&operator=(unknowInstruction const &);
-
-				virtual const char	*what(void) const throw();
-		};
+		// class	unknowInstruction : public std::exception		//exception if unknow instruction
+		// {
+		// 	public:
+		// 		unknowInstruction(int i) {std::cout << "In line: " << i + 1 << " ";};
+		// 		unknowInstruction(unknowInstruction const &) {};
+		// 		virtual ~unknowInstruction(void) throw() {};
+        //
+		// 		unknowInstruction		&operator=(unknowInstruction const &);
+        //
+		// 		virtual const char	*what(void) const throw();
+		// };
 
 		class	unknowSyntax : public std::exception		//exception if unknow Syntax
 		{

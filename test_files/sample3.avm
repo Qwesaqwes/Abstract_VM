@@ -1,13 +1,24 @@
-push float(5.5)
+push int8(10)
+push int16(3)
+add
 push float(12.12)
-;dump
-;push int16(32766)
+dump
 mod
+push double(10.0)
+add
+push int32(120)
+dump
+div
+dump
+assert double(0.090667)
+push int8(120)
+add
+push int16(150)
+sub
+dump
+push int8(-2)
+mul
+push int8(-1)
+mul
 dump
 exit
-;push float(12.12)
-;dump
-;push double(13.13)
-;assert double(13.13)
-;pop
-;exit

@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:39 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/25 20:35:41 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/26 16:25:56 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 // # include <exception>
 // # include <limits>
 # include <stack>
+# include <sstream>
 
 class	Factory
 {
@@ -45,7 +46,7 @@ class	Factory
 		void			assertt(std::string, std::string) const;
 		void			pop(void);
 		void			dump(void) const;
-		void			print(void) const;
+		bool			print(void) const;
 		void			add(void);
 		void			sub(void);
 		void			mul(void);

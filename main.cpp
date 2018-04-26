@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 16:17:01 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/24 19:34:43 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/26 16:02:46 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,26 @@ int main(int ac, char **av)
 		Parse	Parse(av[1]);
 
 
-		std::vector<std::string> content;
-		content = Parse.getVector();
-		std::cout << std::endl;
-		for(unsigned long i = 0; i < content.size(); i++)
-		{
-			std::cout << content[i] << std::endl;
-		}
+		// std::vector<std::string> content;
+		// content = Parse.getVector();
+		// std::cout << std::endl;
+		// for(unsigned long i = 0; i < content.size(); i++)
+		// {
+		// 	std::cout << content[i] << std::endl;
+		// }
 	}
 	else
 	{
 		Parse	Parse;
 
 
-		std::vector<std::string> content;
-		content = Parse.getVector();
-		std::cout << std::endl;
-		for(unsigned long i = 0; i < content.size(); i++)
-		{
-			std::cout << content[i] << std::endl;
-		}
+		// std::vector<std::string> content;
+		// content = Parse.getVector();
+		// std::cout << std::endl;
+		// for(unsigned long i = 0; i < content.size(); i++)
+		// {
+		// 	std::cout << content[i] << std::endl;
+		// }
 	}
 
 
