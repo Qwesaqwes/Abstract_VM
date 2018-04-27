@@ -1,0 +1,5 @@
+push int16(50)
+push int32(50)
+add
+dump
+exit

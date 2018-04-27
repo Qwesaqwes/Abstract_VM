@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 17:57:32 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/26 17:12:20 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/27 17:39:56 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ Factory		&Factory::operator=(Factory const &rhs)
 
 char const		*Factory::invalidValue::what() const throw()
 {
-	return ("Invalid value for this specific type.");
+	return ("Invalid value for this specific type.\n\nINT8 = -128 à 127\nINT16 = -32768 à 32767\nINT32 = –2147483648 à 2147483647\nFLOAT = 3.4E+/-38\nDOUBLE = 1.7E+/-308");
 }
 
 char const		*Factory::assertNotTrue::what() const throw()
@@ -58,7 +58,6 @@ char const		*Factory::operatorError::what() const throw()
 
 IOperand const	*Factory::createInt8(std::string const &value) const
 {
-	// int nb = std::stoi(value);
 	int nb;
 	std::stringstream sstr;
 	sstr << value;
@@ -70,7 +69,6 @@ IOperand const	*Factory::createInt8(std::string const &value) const
 
 IOperand const	*Factory::createInt16(std::string const &value) const
 {
-	// int nb = std::stoi(value);
 	int nb;
 	std::stringstream sstr;
 	sstr << value;
@@ -207,7 +205,6 @@ void		Factory::dump(void) const
 				std::cout <<"\033[1;35m" << w->toString() << "\033[0m" << std::endl;
 				break;
 		}
-		// std::cout <<"\033[1;31m" << w->toString() << "\033[0m" << std::endl;
 		tmp.pop();
 	}
 }
@@ -220,7 +217,7 @@ bool		Factory::print(void) const
 	if (w->getType() != 0)
 		throw Factory::printInst();
 	int integer = std::stoi(w->toString());
-	if (integer > 32 && integer < 127)
+	if (integer >= 32 && integer < 127)
 		std::cout << static_cast<char>(integer);
 	else
 	{
@@ -323,11 +320,11 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 	std::size_t pos_type;
 	std::size_t pos_value;
 
-	std::cout <<"\033[1;31mINT8\033[0m" << std::endl;
-	std::cout <<"\033[1;33mINT16\033[0m" << std::endl;
-	std::cout <<"\033[1;36mINT32\033[0m" << std::endl;
-	std::cout <<"\033[1;37mFLOAT\033[0m" << std::endl;
-	std::cout <<"\033[1;35mDOUBLE\033[0m" << std::endl << std::endl << std::endl;
+	std::cout <<"\033[1;31mINT8\033[0m" << std::endl
+	<<"\033[1;33mINT16\033[0m" << std::endl
+	<<"\033[1;36mINT32\033[0m" << std::endl
+	<<"\033[1;37mFLOAT\033[0m" << std::endl
+	<<"\033[1;35mDOUBLE\033[0m" << std::endl << std::endl << std::endl;
 	for (unsigned long i = 0; i < content.size(); ++i)
 	{
 		pos_inst = content[i].find(" ");
@@ -348,19 +345,4 @@ void		Factory::fill_vectors(std::vector<std::string> content)
 		if (!detec_inst(i))
 			break;
 	}
-	// for(unsigned long i = 0; i < this->_instruction.size(); i++)	 //need to delete
-	// {
-	// 	std::cout << "inst: " << this->_instruction[i] << std::endl;
-	// 	std::cout << "type: " << this->_type[i] << std::endl;
-	// 	std::cout << "value: " << this->_value[i] << std::endl << std::endl;
-	// }
-
-	// std::cout << std::endl;
-	// while(!this->_stack.empty())
-	// {
-	// 	IOperand const *w = this->_stack.top();
-	// 	std::cout << w->toString() << " ";
-	// 	std::cout << w->getType() << std::endl;
-	// 	this->_stack.pop();
-	// }
 }

@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 16:52:01 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/26 16:55:33 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/27 17:52:12 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ template<typename T>
 Operator<T>::Operator(void) {return ;}
 
 template<typename T>
-Operator<T>::Operator(T value) : _value(value), _valueString(std::to_string(value))
-{
-	return ;
-}
+Operator<T>::Operator(T value) : _value(value), _valueString(std::to_string(value)) {return ;}
 
 template<typename T>
 Operator<T>::Operator(Operator const &src)
@@ -90,6 +87,7 @@ T			checkFlow(eOperandType type, T value1, T value2, int typeOp)
 	}
 }
 
+/*------Operators------*/
 template<typename T>
 IOperand const	*Operator<T>::operator+(IOperand const &rhs) const
 {
@@ -97,20 +95,11 @@ IOperand const	*Operator<T>::operator+(IOperand const &rhs) const
 
 	eOperandType resulType = (this->getType() >= rhs.getType()) ? this->getType() : rhs.getType();
 	if (resulType <= 2)
-	{
-		int intRes = checkFlow(resulType, std::stoi(this->toString()), std::stoi(rhs.toString()), 0);
-		return (factory.createOperand(resulType, std::to_string(intRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stoi(this->toString()), std::stoi(rhs.toString()), 0))));
 	else if (resulType == 3)
-	{
-		float floatRes = checkFlow(resulType, std::stof(this->toString()), std::stof(rhs.toString()), 0);
-		return (factory.createOperand(resulType, std::to_string(floatRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stof(this->toString()), std::stof(rhs.toString()), 0))));
 	else
-	{
-		double doubleRes = checkFlow(resulType, std::stod(this->toString()), std::stod(rhs.toString()), 0);
-		return (factory.createOperand(resulType, std::to_string(doubleRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stod(this->toString()), std::stod(rhs.toString()), 0))));
 }
 
 template<typename T>
@@ -120,20 +109,11 @@ IOperand const	*Operator<T>::operator-(IOperand const &rhs) const
 
 	eOperandType resulType = (this->getType() >= rhs.getType()) ? this->getType() : rhs.getType();
 	if (resulType <= 2)
-	{
-		int intRes = checkFlow(resulType, std::stoi(this->toString()), std::stoi(rhs.toString()), 1);
-		return (factory.createOperand(resulType, std::to_string(intRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stoi(this->toString()), std::stoi(rhs.toString()), 1))));
 	else if (resulType == 3)
-	{
-		float floatRes = checkFlow(resulType, std::stof(this->toString()), std::stof(rhs.toString()), 1);
-		return (factory.createOperand(resulType, std::to_string(floatRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stof(this->toString()), std::stof(rhs.toString()), 1))));
 	else
-	{
-		double doubleRes = checkFlow(resulType, std::stod(this->toString()), std::stod(rhs.toString()), 1);
-		return (factory.createOperand(resulType, std::to_string(doubleRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stod(this->toString()), std::stod(rhs.toString()), 1))));
 }
 
 template<typename T>
@@ -143,20 +123,11 @@ IOperand const	*Operator<T>::operator*(IOperand const &rhs) const
 
 	eOperandType resulType = (this->getType() >= rhs.getType()) ? this->getType() : rhs.getType();
 	if (resulType <= 2)
-	{
-		int intRes = checkFlow(resulType, std::stoi(this->toString()), std::stoi(rhs.toString()), 2);
-		return (factory.createOperand(resulType, std::to_string(intRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stoi(this->toString()), std::stoi(rhs.toString()), 2))));
 	else if (resulType == 3)
-	{
-		float floatRes = checkFlow(resulType, std::stof(this->toString()), std::stof(rhs.toString()), 2);
-		return (factory.createOperand(resulType, std::to_string(floatRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stof(this->toString()), std::stof(rhs.toString()), 2))));
 	else
-	{
-		double doubleRes = checkFlow(resulType, std::stod(this->toString()), std::stod(rhs.toString()), 2);
-		return (factory.createOperand(resulType, std::to_string(doubleRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string(checkFlow(resulType, std::stod(this->toString()), std::stod(rhs.toString()), 2))));
 }
 
 template<typename T>
@@ -166,20 +137,11 @@ IOperand const	*Operator<T>::operator/(IOperand const &rhs) const
 
 	eOperandType resulType = (this->getType() >= rhs.getType()) ? this->getType() : rhs.getType();
 	if (resulType <= 2)
-	{
-		int intRes = (std::stoi(this->toString()) == 0) ? throw undifinedBehavior() : std::stoi(rhs.toString()) / std::stoi(this->toString());
-		return (factory.createOperand(resulType, std::to_string(intRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string((std::stoi(this->toString()) == 0) ? throw undifinedBehavior() : std::stoi(rhs.toString()) / std::stoi(this->toString()))));
 	else if (resulType == 3)
-	{
-		float floatRes = (std::stof(this->toString()) == 0) ? throw undifinedBehavior() : std::stof(rhs.toString()) / std::stof(this->toString());
-		return (factory.createOperand(resulType, std::to_string(floatRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string((std::stof(this->toString()) == 0) ? throw undifinedBehavior() : std::stof(rhs.toString()) / std::stof(this->toString()))));
 	else
-	{
-		double doubleRes = (std::stod(this->toString()) == 0) ? throw undifinedBehavior() : std::stod(rhs.toString()) / std::stod(this->toString());
-		return (factory.createOperand(resulType, std::to_string(doubleRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string((std::stod(this->toString()) == 0) ? throw undifinedBehavior() : std::stod(rhs.toString()) / std::stod(this->toString()))));
 }
 
 template<typename T>
@@ -189,22 +151,15 @@ IOperand const	*Operator<T>::operator%(IOperand const &rhs) const
 
 	eOperandType resulType = (this->getType() >= rhs.getType()) ? this->getType() : rhs.getType();
 	if (resulType <= 2)
-	{
-		int intRes = (std::stoi(this->toString()) == 0) ? throw undifinedBehavior() : std::stoi(rhs.toString()) % std::stoi(this->toString());
-		return (factory.createOperand(resulType, std::to_string(intRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string((std::stoi(this->toString()) == 0) ? throw undifinedBehavior() : std::stoi(rhs.toString()) % std::stoi(this->toString()))));
 	else if (resulType == 3)
-	{
-		float floatRes = (std::stof(this->toString()) == 0) ? throw undifinedBehavior() : fmod(std::stof(rhs.toString()), std::stof(this->toString()));
-		return (factory.createOperand(resulType, std::to_string(floatRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string((std::stof(this->toString()) == 0) ? throw undifinedBehavior() : fmod(std::stof(rhs.toString()), std::stof(this->toString())))));
 	else
-	{
-		double doubleRes = (std::stod(this->toString()) == 0) ? throw undifinedBehavior() : fmod(std::stod(rhs.toString()), std::stod(this->toString()));
-		return (factory.createOperand(resulType, std::to_string(doubleRes)));
-	}
+		return (factory.createOperand(resulType, std::to_string((std::stod(this->toString()) == 0) ? throw undifinedBehavior() : fmod(std::stod(rhs.toString()), std::stod(this->toString())))));
 }
 
+
+/*------Getter------*/
 template<typename T>
 std::string const	&Operator<T>::toString(void) const
 {

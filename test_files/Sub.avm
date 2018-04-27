@@ -1,0 +1,5 @@
+push float(10.25)
+push int8(5)
+sub
+dump
+exit;

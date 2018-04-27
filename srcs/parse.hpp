@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:29 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/26 19:21:44 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/27 16:08:20 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include <fstream>
 # include <iostream>
 # include <vector>
-// # include <istream>
-// # include <exception>
 
 class	Parse
 {
@@ -29,8 +27,6 @@ class	Parse
 
 		Parse	&operator=(Parse const &);
 
-		std::vector<std::string>	getVector(void) const;
-
 	private:
 		std::vector<std::string> _content;
 
@@ -40,56 +36,8 @@ class	Parse
 		void	check_instruction(std::ofstream &) const;
 		void	check_type(std::string, std::string, int, std::ofstream &) const;
 		void	check_values(std::string, std::string, int, std::ofstream &) const;
-		void	check_exit_inst(void) const;
-		void	fill_content(std::string);
-
-		class	notfile : public std::exception		//exception if file doesn't exist
-		{
-			public:
-				notfile(void) {};
-				notfile(notfile const &) {};
-				virtual ~notfile(void) throw() {};
-
-				notfile		&operator=(notfile const &);
-
-				virtual const char	*what(void) const throw();
-		};
-
-		class	notExitInstruction : public std::exception		//exception if exit instruction no at the end
-		{
-			public:
-				notExitInstruction(void) {};
-				notExitInstruction(notExitInstruction const &) {};
-				virtual ~notExitInstruction(void) throw() {};
-
-				notExitInstruction		&operator=(notExitInstruction const &);
-
-				virtual const char	*what(void) const throw();
-		};
-
-		// class	unknowInstruction : public std::exception		//exception if unknow instruction
-		// {
-		// 	public:
-		// 		unknowInstruction(int i) {std::cout << "In line: " << i + 1 << " ";};
-		// 		unknowInstruction(unknowInstruction const &) {};
-		// 		virtual ~unknowInstruction(void) throw() {};
-        //
-		// 		unknowInstruction		&operator=(unknowInstruction const &);
-        //
-		// 		virtual const char	*what(void) const throw();
-		// };
-
-		class	unknowSyntax : public std::exception		//exception if unknow Syntax
-		{
-			public:
-				unknowSyntax(int i) {std::cout << "In line: " << i + 1 << " ";};
-				unknowSyntax(unknowSyntax const &) {};
-				virtual ~unknowSyntax(void) throw() {};
-
-				unknowSyntax		&operator=(unknowSyntax const &);
-
-				virtual const char	*what(void) const throw();
-		};
+		void	check_exit_inst(std::ofstream &) const;
+		bool	fill_content(std::string, std::ofstream &);
 };
 
 #endif

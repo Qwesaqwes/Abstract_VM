@@ -1,0 +1,5 @@
+push int8(4)
+push int8(5)
+mul
+dump
+exita

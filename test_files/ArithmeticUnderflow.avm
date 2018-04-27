@@ -1,0 +1,4 @@
+push int16(-32768)
+push int16(-1)
+add
+exit

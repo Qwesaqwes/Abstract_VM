@@ -1,6 +1,0 @@
-push int(9)
-pus int16(10)
-push int8(18.2)
-add
-dump
-exit
