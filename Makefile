@@ -6,7 +6,7 @@
 #    By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/09 16:15:09 by jichen-m          #+#    #+#              #
-#    Updated: 2018/04/27 18:51:02 by jichen-m         ###   ########.fr        #
+#    Updated: 2018/04/27 18:54:07 by jichen-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,4 +48,4 @@ endif
 
 re: fclean all
 
-.PHONY	:		all clean re
+.PHONY	: all clean re

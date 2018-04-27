@@ -6,7 +6,7 @@
 /*   By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:29:37 by jichen-m          #+#    #+#             */
-/*   Updated: 2018/04/27 17:18:53 by jichen-m         ###   ########.fr       */
+/*   Updated: 2018/04/27 23:39:06 by jichen-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	Parse::check_values(std::string type, std::string value, int line, std::ofs
 		outfile << "In line: " << line + 1 << " Unknow Value." << std::endl;
 	for (std::string::iterator it = value.begin(); it != value.end(); it++)
 	{
-		if (*(value.begin()) == '-')
+		if ((*it == '-' || *it == '+') && it == value.begin())
 			continue;
 		if (*it == '.' && point != 1 && (std::find(std::begin(arrayFtype), std::end(arrayFtype), type) != std::end(arrayFtype)))
 		{
