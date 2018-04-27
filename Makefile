@@ -6,7 +6,7 @@
 #    By: jichen-m <jichen-m@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/09 16:15:09 by jichen-m          #+#    #+#              #
-#    Updated: 2018/04/27 18:28:14 by jichen-m         ###   ########.fr        #
+#    Updated: 2018/04/27 18:51:02 by jichen-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ FLAGS = -Wall -Wextra -Werror
 ODIR = ./BinaryFiles
 
 SRCO = $(SRC:.cpp=.o)
+
+PATHFILE = ./Error.txt
 
 all: $(NAME)
 
@@ -39,6 +41,10 @@ clean:
 fclean: clean
 		@rm -rf $(NAME)
 		@echo "$(NAME) has been removed ! ✓"
+
+ifneq ("$(wildcard $(PATHFILE))", "")
+	@rm $(PATHFILE)
+endif
 
 re: fclean all
 
